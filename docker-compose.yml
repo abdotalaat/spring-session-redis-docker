@@ -1,0 +1,26 @@
+db:
+  image: redis
+  hostname: redis
+  ports:
+  - "6379:6379"
+app1:
+  build: .
+  links:
+  - "db:redis"
+app2:
+  build: .
+  links:
+  - "db:redis"
+app3:
+  build: .
+  links:
+  - "db:redis"
+haproxy:
+  image: tutum/haproxy:0.2
+  ports:
+  - "80:80"
+  - "1936:1936"
+  links:
+  - app1
+  - app2
+  - app3
